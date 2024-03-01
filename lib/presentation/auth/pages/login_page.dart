@@ -32,19 +32,19 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: ListView(padding: const EdgeInsets.all(16.0), children: [
         const SpaceHeight(80.0),
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 130.0),
-            child: Image.asset(
-              Assets.images.logo.path,
-              width: 100,
-              height: 100,
-            )),
-        const SpaceHeight(24.0),
+        //   Padding(
+        //       padding: const EdgeInsets.symmetric(horizontal: 130.0),
+        //       child: Image.asset(
+        //         Assets.images.logo.path,
+        //         width: 100,
+        //         height: 100,
+        //       )),
+        //  const SpaceHeight(24.0),
         const Center(
           child: Text(
-            "POS",
+            "POS STARS",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 24,
               fontWeight: FontWeight.w700,
               color: Colors.black,
             ),

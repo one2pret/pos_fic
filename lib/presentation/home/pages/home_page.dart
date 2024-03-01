@@ -5,8 +5,6 @@ import 'package:pos_fic/core/components/menu_button.dart';
 import 'package:pos_fic/core/components/search_input.dart';
 import 'package:pos_fic/core/components/spaces.dart';
 import 'package:pos_fic/presentation/home/bloc/product/product_bloc.dart';
-import 'package:pos_fic/presentation/home/models/product_category.dart';
-import 'package:pos_fic/presentation/home/models/product_model.dart';
 import 'package:pos_fic/presentation/home/widgets/product_card.dart';
 import 'package:pos_fic/presentation/home/widgets/product_empty.dart';
 
@@ -100,11 +98,18 @@ class _HomePageState extends State<HomePage> {
             SearchInput(
               controller: searchController,
               onChanged: (value) {
-                /* indexValue.value = 0;
-                searchResults = products
-                    .where((e) =>
-                        e.name.toLowerCase().contains(value.toLowerCase()))
-                    .toList(); */
+                if (value.length > 3) {
+                  //searchProduct
+                  context
+                      .read<ProductBloc>()
+                      .add(ProductEvent.searchProduct(value));
+                }
+
+                if (value.isEmpty) {
+                  context
+                      .read<ProductBloc>()
+                      .add(const ProductEvent.fetchAllFromState());
+                }
               },
             ),
             const SpaceHeight(20),

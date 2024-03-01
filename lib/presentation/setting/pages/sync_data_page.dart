@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_fic/data/datasources/auth_local_datasource.dart';
+import 'package:pos_fic/core/components/spaces.dart';
 import 'package:pos_fic/data/datasources/product_local_datasource.dart';
-import 'package:pos_fic/presentation/auth/pages/login_page.dart';
-import 'package:pos_fic/presentation/home/bloc/logout/logout_bloc.dart';
 import 'package:pos_fic/presentation/home/bloc/product/product_bloc.dart';
+import 'package:pos_fic/presentation/setting/bloc/sync_order/sync_order_bloc.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({super.key});
+class SyncDataPage extends StatefulWidget {
+  const SyncDataPage({super.key});
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  State<SyncDataPage> createState() => _SyncDataPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SyncDataPageState extends State<SyncDataPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(
+        title: const Text('Sync Data'),
+        centerTitle: true,
+      ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         children: [
           BlocConsumer<ProductBloc, ProductState>(
             listener: (context, state) {
@@ -40,32 +47,40 @@ class _SettingPageState extends State<SettingPage> {
                   onPressed: () {
                     context.read<ProductBloc>().add(const ProductEvent.fetch());
                   },
-                  child: const Text("Sync Data"),
+                  child: const Text("Sync Data Product"),
                 );
               }, loading: () {
                 return const Center(child: CircularProgressIndicator());
               });
             },
           ),
-          const Divider(),
-          BlocConsumer<LogoutBloc, LogoutState>(
+          const SpaceHeight(20),
+          BlocConsumer<SyncOrderBloc, SyncOrderState>(
             listener: (context, state) {
               state.maybeMap(
                   orElse: () {},
-                  success: (_) {
-                    AuthLocalDatasource().removeAuthData();
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                  success: (_) async {
+                    // await ProductLocalDatasource.instance.removeAllProduct();
+                    // await ProductLocalDatasource.instance
+                    //     .insertAllProduct(_.products.toList());
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Sync Data Success"),
+                    ));
                   });
             },
             builder: (context, state) {
-              return ElevatedButton(
+              return state.maybeWhen(orElse: () {
+                return ElevatedButton(
                   onPressed: () {
-                    context.read<LogoutBloc>().add(const LogoutEvent.logout());
+                    context
+                        .read<SyncOrderBloc>()
+                        .add(const SyncOrderEvent.sendOrder());
                   },
-                  child: const Text("Logout"));
+                  child: const Text("Sync Data Order"),
+                );
+              }, loading: () {
+                return const Center(child: CircularProgressIndicator());
+              });
             },
           ),
         ],

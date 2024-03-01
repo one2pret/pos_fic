@@ -1,15 +1,13 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_fic/core/assets/assets.gen.dart';
 import 'package:pos_fic/core/constants/colors.dart';
-import 'package:pos_fic/data/datasources/auth_local_datasource.dart';
-import 'package:pos_fic/presentation/auth/pages/login_page.dart';
-import 'package:pos_fic/presentation/home/bloc/logout/logout_bloc.dart';
+import 'package:pos_fic/presentation/history/pages/history_page.dart';
 import 'package:pos_fic/presentation/home/pages/home_page.dart';
 import 'package:pos_fic/presentation/home/widgets/nav_item.dart';
-import 'package:pos_fic/presentation/setting/setting_page.dart';
+import 'package:pos_fic/presentation/order/pages/order_page.dart';
+import 'package:pos_fic/presentation/setting/pages/setting_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -23,12 +21,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(
-      child: Text("Order"),
-    ),
-    const Center(
-      child: Text("History"),
-    ),
+    const OrdersPage(),
+    const HistoryPage(),
     const SettingPage()
   ];
 
